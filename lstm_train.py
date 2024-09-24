@@ -17,7 +17,7 @@ batch_size = args.batch_size
 n_classes = args.n_classes
 save_model_path = args.save_model_path
 
-# python lstm_train.py --epochs 5 --batch_size 64 --n_classes 20 --save_model_path './save_models/20new_lstm.h5'
+# python lstm_train.py --epochs 6 --batch_size 64 --n_classes 20 --save_model_path './save_models/20new_lstm_6.h5'
 
 
 def main():
