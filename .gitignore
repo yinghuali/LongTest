@@ -173,3 +173,4 @@ tables/*
 result/*
 *.ipynb
 test.py
+*ipynb_checkpoints
