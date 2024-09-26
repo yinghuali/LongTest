@@ -53,9 +53,9 @@ embedding_train_vec = pickle.load(open(path_file_embedding_train, 'rb'))
 embedding_test_vec = pickle.load(open(path_file_embedding_test, 'rb'))
 
 
-embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.5, random_state=0)
+embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.3, random_state=0)
 
-model = XGBClassifier()
+model = LogisticRegression()
 model.fit(embedding_train_vec, y_train)
 
 y_pre_val = model.predict(embedding_val_vec)
