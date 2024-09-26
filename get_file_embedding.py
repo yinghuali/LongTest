@@ -5,8 +5,8 @@ from utils import *
 from sentence_transformers import SentenceTransformer
 
 data_name = '20news'
-path_save_train = './data/embedding_file_data/20news_20_train_all-MiniLM-L6-v2.pkl'
-path_save_test = './data/embedding_file_data/20news_20_test_all-MiniLM-L6-v2.pkl'
+path_save_train = './data/embedding_file_data/20news_train_all-MiniLM-L6-v2.pkl'
+path_save_test = './data/embedding_file_data/20news_test_all-MiniLM-L6-v2.pkl'
 transformer_name = 'all-MiniLM-L6-v2'
 
 
