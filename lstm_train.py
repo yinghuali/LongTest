@@ -1,5 +1,6 @@
 from read_data import *
 from get_models import *
+from tensorflow.keras.models import save_model
 import os
 import argparse
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -31,14 +32,13 @@ def select_data(data_name):
 def main():
     x_train, x_test, y_train, y_test = select_data(data_name)
     model = get_lstm_model(n_classes)
-    history = model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
+    model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 
     loss, accuracy = model.evaluate(x_train, y_train, batch_size=batch_size)
     print('train acc:', accuracy)
     loss, accuracy = model.evaluate(x_test, y_test, batch_size=batch_size)
     print('test acc:', accuracy)
-
-    model.save(save_model_path)
+    save_model(model, save_model_path)
 
 
 if __name__ == '__main__':
