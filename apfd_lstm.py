@@ -5,6 +5,7 @@ from read_data import *
 from utils import *
 from get_rank_idx import *
 from sklearn.ensemble import RandomForestClassifier
+from xgboost import XGBClassifier
 
 path_model = './save_models/20new_lstm_6.h5'
 data_name = '20news'
@@ -72,29 +73,20 @@ y_pre_test_label = np.argmax(y_pre_test, axis=1)
 
 miss_train_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_train_label, y_pre_test_label, y_train_label, y_test_label)
 
-
-
 embedding_train_vec = pickle.load(open(path_embedding_train, 'rb'))
 embedding_test_vec = pickle.load(open(path_embedding_test, 'rb'))
-
 
 embedding_train_vec = embedding_train_vec.reshape(embedding_train_vec.shape[0], embedding_train_vec.shape[1] * embedding_train_vec.shape[2])
 embedding_test_vec = embedding_test_vec.reshape(embedding_test_vec.shape[0], embedding_test_vec.shape[1] * embedding_test_vec.shape[2])
 
-print(embedding_test_vec.shape)
+
 feature_x_train = np.hstack((final_layer_train_vec, embedding_train_vec))
 feature_x_test = np.hstack((final_layer_test_vec, embedding_test_vec))
 
-print(feature_x_test.shape)
 
-dic_res = get_compare_method_apfd(final_layer_test_vec, idx_miss_test_list)
-print(dic_res)
-
-
-model = RandomForestClassifier()
+model = XGBClassifier()
 model.fit(final_layer_train_vec, miss_train_label)
 feature_pre = model.predict_proba(final_layer_test_vec)[:, 1]
-
 feature_rank_idx = feature_pre.argsort()[::-1].copy()
 feature_apfd = apfd(idx_miss_test_list, feature_rank_idx)
 print(feature_apfd)
@@ -102,15 +94,19 @@ print(feature_apfd)
 model = RandomForestClassifier()
 model.fit(feature_x_train, miss_train_label)
 feature_pre = model.predict_proba(feature_x_test)[:, 1]
-
 feature_rank_idx = feature_pre.argsort()[::-1].copy()
 feature_apfd = apfd(idx_miss_test_list, feature_rank_idx)
 print(feature_apfd)
 
 
+dic_res = get_compare_method_apfd(final_layer_test_vec, idx_miss_test_list)
+print(dic_res)
 
+train_acc = 1 - sum(miss_train_label)/len(miss_train_label)
+test_acc = 1 - sum(miss_test_label)/len(miss_test_label)
 
-
+print('train_acc', train_acc)
+print('test_acc', test_acc)
 
 
 
