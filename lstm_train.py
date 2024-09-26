@@ -23,14 +23,14 @@ save_model_path = args.save_model_path
 # python lstm_train.py --data_name '20news' --epochs 6 --batch_size 64 --n_classes 20 --save_model_path './save_models/20new_lstm_6.h5'
 
 
-def select_data(data_name):
+def load_data(data_name):
     if data_name == '20news':
         x_train, x_test, y_train, y_test = read_lstm_gru_20news()
         return x_train, x_test, y_train, y_test
 
 
 def main():
-    x_train, x_test, y_train, y_test = select_data(data_name)
+    x_train, x_test, y_train, y_test = load_data(data_name)
     model = get_lstm_model(n_classes)
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 

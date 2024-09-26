@@ -1,6 +1,7 @@
 import re
 import numpy as np
 
+
 def clean_text(text):
     text = text.replace('\n', ' ').replace('\r', ' ')
     text = re.sub(r'[^A-Za-z0-9\s]+', '', text)
@@ -55,3 +56,14 @@ def get_miss_lable(target_train_pre, target_test_pre, y_train, y_test):
     miss_test_label = np.array(miss_test_label)
 
     return miss_train_label, miss_test_label, idx_miss_test_list
+
+
+def apfd(error_idx_list, pri_idx_list):
+    error_idx_list = list(error_idx_list)
+    pri_idx_list = list(pri_idx_list)
+    n = len(pri_idx_list)
+    m = len(error_idx_list)
+    TF_list = [pri_idx_list.index(i) for i in error_idx_list]
+    apfd = 1 - sum(TF_list)*1.0 / (n*m) + 1 / (2*n)
+    return apfd
+
