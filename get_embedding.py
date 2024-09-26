@@ -6,7 +6,8 @@ from sentence_transformers import SentenceTransformer
 
 data_name = '20news'
 num_chunks = 20
-path_save = './data/embedding_data/20news_20.pkl'
+path_save_train = './data/embedding_data/20news_20_train.pkl'
+path_save_test = './data/embedding_data/20news_20_test.pkl'
 
 
 def select_data(data_name):
@@ -18,14 +19,22 @@ def select_data(data_name):
 def main():
     model = SentenceTransformer("all-MiniLM-L6-v2")
     texts_train, texts_test, y_train, y_test = select_data(data_name)
+
+    # all_embeddings = []  # n_text * n_chunks * dimension_vec
+    # for text in texts_train:
+    #     chunks_list = get_chunks_list(text, num_chunks)
+    #     embeddings = model.encode(chunks_list)
+    #     all_embeddings.append(embeddings)
+    # all_embeddings = np.array(all_embeddings)
+    # pickle.dump(all_embeddings, open(path_save_train, 'wb'), protocol=4)
+
     all_embeddings = []  # n_text * n_chunks * dimension_vec
-    for text in texts_train:
+    for text in texts_test:
         chunks_list = get_chunks_list(text, num_chunks)
         embeddings = model.encode(chunks_list)
         all_embeddings.append(embeddings)
     all_embeddings = np.array(all_embeddings)
-
-    pickle.dump(all_embeddings, open(path_save, 'wb'), protocol=4)
+    pickle.dump(all_embeddings, open(path_save_test, 'wb'), protocol=4)
 
 
 if __name__ == '__main__':
