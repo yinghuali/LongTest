@@ -6,22 +6,30 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 
 ap = argparse.ArgumentParser()
+ap.add_argument("--data_name", type=str)
 ap.add_argument("--epochs", type=int)
 ap.add_argument("--batch_size", type=int)
 ap.add_argument("--n_classes", type=int)
 ap.add_argument("--save_model_path", type=str)
 args = ap.parse_args()
 
+data_name = args.data_name
 epochs = args.epochs
 batch_size = args.batch_size
 n_classes = args.n_classes
 save_model_path = args.save_model_path
 
-# python lstm_train.py --epochs 6 --batch_size 64 --n_classes 20 --save_model_path './save_models/20new_lstm_6.h5'
+# python lstm_train.py --data_name '20news' --epochs 6 --batch_size 64 --n_classes 20 --save_model_path './save_models/20new_lstm_6.h5'
+
+
+def select_data(data_name):
+    if data_name == '20news':
+        x_train, x_test, y_train, y_test = read_lstm_gru_20news()
+        return x_train, x_test, y_train, y_test
 
 
 def main():
-    x_train, x_test, y_train, y_test = read_lstm_gru_20news()
+    x_train, x_test, y_train, y_test = select_data(data_name)
     model = get_lstm_model(n_classes)
     history = model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size)
 
