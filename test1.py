@@ -1,54 +1,137 @@
-import numpy as np
-from sklearn.datasets import fetch_20newsgroups
-from sklearn.model_selection import train_test_split
-from tensorflow.keras.preprocessing.text import Tokenizer
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from tensorflow.keras.utils import to_categorical
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Embedding, LSTM, Dense
+import re
 
-# 加载数据集
-newsgroups = fetch_20newsgroups(subset='all')
-texts = newsgroups.data
-labels = newsgroups.target
+text = """
+From: I3150101@dbstu1.rz.tu-bs.de (Benedikt Rosenau)
+Subject: Re: Gospel Dating
 
-# 文本预处理
-max_words = 10000
-tokenizer = Tokenizer(num_words=max_words)
-tokenizer.fit_on_texts(texts)
-sequences = tokenizer.texts_to_sequences(texts)
+In article <65974@mimsy.umd.edu>
+mangoe@cs.umd.edu (Charley Wingate) writes:
 
-max_len = 200
-data = pad_sequences(sequences, maxlen=max_len)
-labels = to_categorical(np.asarray(labels))
+>>Well, John has a quite different, not necessarily more elaborated theology.
+>>There is some evidence that he must have known Luke, and that the content
+>>of Q was known to him, but not in a 'canonized' form.
 
-# 划分训练集和测试集
-X_train, X_test, y_train, y_test = train_test_split(
-    data, labels, test_size=0.2, random_state=42)
+>This is a new argument to me.  Could you elaborate a little?
 
-# 构建模型
-embedding_dim = 128
 
-model = Sequential()
-model.add(Embedding(input_dim=max_words, output_dim=embedding_dim, input_length=max_len))
-model.add(LSTM(128, dropout=0.2, recurrent_dropout=0.2))
-model.add(Dense(20, activation='softmax'))
+The argument goes as follows: Q-oid quotes appear in John, but not in
+the almost codified way they were in Matthew or Luke. However, they are
+considered to be similar enough to point to knowledge of Q as such, and
+not an entirely different source.
 
-# 编译模型
-model.compile(optimizer='adam',
-              loss='categorical_crossentropy',
-              metrics=['accuracy'])
 
-# 训练模型
-epochs = 5
-batch_size = 64
+>>Assuming that he knew Luke would obviously put him after Luke, and would
+>>give evidence for the latter assumption.
 
-history = model.fit(X_train, y_train,
-                    epochs=epochs,
-                    batch_size=batch_size,
-                    validation_split=0.1)
+>I don't think this follows.  If you take the most traditional attributions,
+>then Luke might have known John, but John is an elder figure in either case.
+>We're talking spans of time here which are well within the range of
+>lifetimes.
 
-# 评估模型
-loss, accuracy = model.evaluate(X_test, y_test, batch_size=batch_size)
-print('测试集损失值:', loss)
-print('测试集准确率:', accuracy)
+We are talking date of texts here, not the age of the authors. The usual
+explanation for the time order of Mark, Matthew and Luke does not consider
+their respective ages. It says Matthew has read the text of Mark, and Luke
+that of Matthew (and probably that of Mark).
+
+As it is assumed that John knew the content of Luke's text. The evidence
+for that is not overwhelming, admittedly.
+
+
+>>>(1)  Earlier manuscripts of John have been discovered.
+
+>>Interesting, where and which? How are they dated? How old are they?
+
+
+>Unfortunately, I haven't got the info at hand.  It was (I think) in the late
+>'70s or early '80s, and it was possibly as old as CE 200.
+
+
+When they are from about 200, why do they shed doubt on the order on
+putting John after the rest of the three?
+
+
+>>I don't see your point, it is exactly what James Felder said.  They had no
+>>first hand knowledge of the events, and it obvious that at least two of them
+>>used older texts as the base of their account.  And even the association of
+>>Luke to Paul or Mark to Peter are not generally accepted.
+
+>Well, a genuine letter of Peter would be close enough, wouldn't it?
+
+
+Sure, an original together with Id card of sender and receiver would be
+fine. So what's that supposed to say? Am I missing something?
+
+
+>And I don't think a "one step removed" source is that bad.  If Luke and Mark
+>and Matthew learned their stories directly from diciples, then I really
+>cannot believe in the sort of "big transformation from Jesus to gospel" that
+>some people posit.  In news reports, one generally gets no better
+>information than this.
+
+>And if John IS a diciple, then there's nothing more to be said.
+
+
+That John was a disciple is not generally accepted. The style and language
+together with the theology are usually used as counterargument.
+
+The argument that John was a disciple relies on the claim in the gospel
+of John itself. Is there any other evidence for it?
+
+One step and one generation removed is bad even in our times. Compare that
+to reports of similar events in our century in almost illiterate societies.
+Not even to speak off that believers are not necessarily the best sources.
+
+
+>>It is also obvious that Mark has been edited. How old are the oldest
+>>manuscripts? To my knowledge (which can be antiquated) the oldest is
+>>quite after any of these estimates, and it is not even complete.
+
+>The only clear "editing" is problem of the ending, and it's basically a
+>hopeless mess.  The oldest versions give a strong sense of incompleteness,
+>to the point where the shortest versions seem to break off in midsentence.
+>The most obvious solution is that at some point part of the text was lost.
+>The material from verse 9 on is pretty clearly later and seems to represent
+>a synopsys of the end of Luke.
+
+In other words, one does not know what the original of Mark did look like
+and arguments based on Mark are pretty weak.
+
+But how is that connected to a redating of John?
+   Benedikt
+"""
+
+
+def clean_text(text):
+    text = text.replace('\n', ' ').replace('\r', ' ')
+    text = re.sub(r'[^A-Za-z0-9\s]+', '', text)
+    text = re.sub(' +', ' ', text)
+    text = text.strip()
+    return text
+
+
+def split_text_into_chunks(text, num_chunks):
+    words = text.split()
+    chunk_size = len(words) // num_chunks
+    remainder = len(words) % num_chunks
+
+    chunks_list = []
+    start = 0
+    for i in range(num_chunks):
+        end = start + chunk_size + (1 if i < remainder else 0)
+        sentence = ' '.join(words[start:end])
+        sentence = sentence.strip()
+        chunks_list.append(sentence)
+        start = end
+
+    return chunks_list
+
+
+def get_chunks_list(text, num_chunks):
+    text_clean = clean_text(text)
+    chunks_list = split_text_into_chunks(text_clean, num_chunks)
+    return chunks_list
+
+
+print(len(get_chunks_list(text, 10)))
+
+print(get_chunks_list(text, 10)[-1])

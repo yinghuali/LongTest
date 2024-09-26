@@ -23,6 +23,16 @@ def read_lstm_gru_20news():
     return x_train, x_test, y_train, y_test
 
 
+def read_normal_20news():
+    newsgroups = fetch_20newsgroups(subset='all')
+    texts = newsgroups.data
+    labels = newsgroups.target
+    labels = to_categorical(np.asarray(labels))
+    texts_train, texts_test, y_train, y_test = train_test_split(texts, labels, test_size=0.3, random_state=0)
+    return texts_train, texts_test, y_train, y_test
+
+
+
 
 
 

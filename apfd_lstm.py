@@ -9,12 +9,18 @@ data_name = '20news'
 
 def select_data(data_name):
     if data_name == '20news':
-        x_train, x_test, y_train, y_test = read_lstm_gru_20news()
-        return x_train, x_test, y_train, y_test
+        texts_train, texts_test, y_train, y_test = read_normal_20news()
+        return texts_train, texts_test, y_train, y_test
 
 
-x_train, x_test, y_train, y_test = select_data(data_name)
+texts_train, texts_test, y_train, y_test = select_data(data_name)
 
-model = load_model(path_model, compile=False)
-pre = model.predict(x_test)
-print(pre.shape)
+
+# model = load_model(path_model, compile=False)
+# pre = model.predict(x_test)
+# print(pre.shape)
+
+
+print(texts_train[0])
+
+print(len(texts_train))
