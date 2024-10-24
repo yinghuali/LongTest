@@ -34,7 +34,7 @@ def main():
 
     y_list = [dic_map[i] for i in label_list]
 
-    df = pd.DataFrame(columns=['content', 'label'])
+    df = pd.DataFrame(columns=['content'])
     df['content'] = content_list
     df['y'] = y_list
     df.to_csv(path_save, index=False, sep=',')
