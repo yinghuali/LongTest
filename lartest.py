@@ -10,15 +10,8 @@ from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
 
-data_name = '20news'
-path_file_embedding_train = './data/embedding_file_data/20news_train_all-MiniLM-L6-v2.pkl'
-path_file_embedding_test = './data/embedding_file_data/20news_test_all-MiniLM-L6-v2.pkl'
-
-
-def load_select_data(data_name):
-    if data_name == '20news':
-        texts_train, texts_test, y_train, y_test = read_normal_20news()
-        return texts_train, texts_test, y_train, y_test
+path_file_embedding_X= './data/embedding_data/EURLEX57K_file_X.pkl'
+path_file_embedding_y = './data/embedding_data/EURLEX57K_file_y.pkl'
 
 
 def get_compare_method_apfd(x_test_target_model_pre, idx_miss_test_list):
@@ -44,39 +37,31 @@ def get_compare_method_apfd(x_test_target_model_pre, idx_miss_test_list):
 
     return dic
 
-texts_train, texts_test, y_train, y_test = load_select_data(data_name)
 
-y_train = np.argmax(y_train, axis=1)
-y_test = np.argmax(y_test, axis=1)
-
-embedding_train_vec = pickle.load(open(path_file_embedding_train, 'rb'))
-embedding_test_vec = pickle.load(open(path_file_embedding_test, 'rb'))
+embedding_vec = pickle.load(open(path_file_embedding_X, 'rb'))
+y = pickle.load(open(path_file_embedding_y, 'rb'))
 
 
-embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.3, random_state=0)
+embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.3, random_state=0)
 
-model = LogisticRegression()
+model = RandomForestClassifier()
 model.fit(embedding_train_vec, y_train)
 
-y_pre_val = model.predict(embedding_val_vec)
 y_pre_test = model.predict(embedding_test_vec)
-final_feature_val = model.predict_proba(embedding_val_vec)
 final_feature_test = model.predict_proba(embedding_test_vec)
 
 
 y_pre_train = model.predict(embedding_train_vec)
-
 acc = accuracy_score(y_train, y_pre_train)
 print('acc:', acc)
-acc = accuracy_score(y_val, y_pre_val)
-print('acc:', acc)
+
 acc = accuracy_score(y_test, y_pre_test)
 print('acc:', acc)
 
 
-miss_val_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_val, y_pre_test, y_val, y_test)
+miss_train_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_train, y_pre_test, y_train, y_test)
+
 model = XGBClassifier()
-model.fit(final_feature_val, miss_val_label)
 feature_pre = model.predict_proba(final_feature_test)[:, 1]
 feature_rank_idx = feature_pre.argsort()[::-1].copy()
 feature_apfd = apfd(idx_miss_test_list, feature_rank_idx)
