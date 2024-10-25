@@ -8,4 +8,4 @@
 #SBATCH -p batch
 #SBATCH --mem 10G
 
-python get_file_embedding.py
+python get_file_embedding_EURLEX57K.py

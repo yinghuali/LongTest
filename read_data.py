@@ -34,5 +34,3 @@ def read_normal_20news():
 
 
 
-
-
