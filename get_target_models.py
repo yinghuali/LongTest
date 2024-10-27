@@ -37,7 +37,7 @@ def select_model(model_name):
     if model_name == 'rf':
         model = RandomForestClassifier(n_estimators=10, max_depth=3)
     elif model_name == 'lr':
-        model = LogisticRegression(max_iter=20)
+        model = LogisticRegression(max_iter=5)
     elif model_name == 'xgb':
         model = XGBClassifier(n_estimators=10)
     return model
