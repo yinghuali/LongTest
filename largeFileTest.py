@@ -44,7 +44,7 @@ print(embedding_vec.shape)
 print(y.shape)
 
 
-embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.3, random_state=0)
+embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.2, random_state=0)
 
 model = RandomForestClassifier(n_estimators=10, max_depth=3)
 model.fit(embedding_train_vec, y_train)

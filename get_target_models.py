@@ -6,8 +6,8 @@ from utils import *
 from get_rank_idx import *
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
-from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
 
 import argparse
 ap = argparse.ArgumentParser()
@@ -30,7 +30,7 @@ model_name = args.model_name
 
 # python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-rf.model' --model_name 'rf'
 # python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-lr.model' --model_name 'lr'
-# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-xgb.model' --model_name 'xgb'
+# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-dt.model' --model_name 'dt'
 
 
 def select_model(model_name):
@@ -38,8 +38,8 @@ def select_model(model_name):
         model = RandomForestClassifier(n_estimators=10, max_depth=3)
     elif model_name == 'lr':
         model = LogisticRegression(max_iter=5)
-    elif model_name == 'xgb':
-        model = XGBClassifier(n_estimators=10)
+    elif model_name == 'dt':
+        model = DecisionTreeClassifier(max_depth=5)
     return model
 
 
@@ -50,7 +50,8 @@ def main():
     print(embedding_vec.shape)
     print(y.shape)
 
-    embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.3, random_state=0)
+    embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.2, random_state=0)
+    embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.5, random_state=0)
 
     model = select_model(model_name)
     model.fit(embedding_train_vec, y_train)
