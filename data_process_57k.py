@@ -21,6 +21,7 @@ def main():
     path_list = get_path(path_dir_compile)
     label_list = []
     content_list = []
+    type_list = []
     for path in path_list:
         dic = json.load(open(path, 'r'))
         label = dic['concepts'][0]
@@ -28,15 +29,19 @@ def main():
         content_list.append(content)
         label_list.append(label)
 
-    label_set = list(set(label_list))
-    y_map = list(range(len(label_set)))
-    dic_map = dict(zip(label_set, y_map))
+        type_content = dic['type']
+        type_list.append(type_content)
 
-    y_list = [dic_map[i] for i in label_list]
+    print(set(type_list))
+
+    type_set = list(set(type_list))
+    type_map = list(range(len(type_set)))
+    dic_type_map = dict(zip(type_set, type_map))
+    type_list = [dic_type_map[i] for i in type_list]
 
     df = pd.DataFrame(columns=['content'])
     df['content'] = content_list
-    df['y'] = y_list
+    df['type'] = type_list
     df.to_csv(path_save, index=False, sep=',')
 
 

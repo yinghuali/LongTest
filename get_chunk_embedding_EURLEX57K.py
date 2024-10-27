@@ -13,8 +13,7 @@ path_save_y = './data/embedding_data/EURLEX57K_chunk_y.pkl'
 def main():
     df = pd.read_csv(path_data)
     content_list = list(df['content'])
-    y_list = list(df['y'])
-
+    y_list = list(df['type'])
     model = SentenceTransformer("all-MiniLM-L6-v2")
     all_embeddings = []  # n_text * n_chunks * dimension_vec
     for text in content_list:

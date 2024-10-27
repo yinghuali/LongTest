@@ -40,15 +40,18 @@ def get_compare_method_apfd(x_test_target_model_pre, idx_miss_test_list):
 
 embedding_vec = pickle.load(open(path_file_embedding_X, 'rb'))
 y = pickle.load(open(path_file_embedding_y, 'rb'))
+print(embedding_vec.shape)
+print(y.shape)
 
 
 embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.3, random_state=0)
 
-model = RandomForestClassifier()
+model = RandomForestClassifier(n_estimators=10, max_depth=3)
 model.fit(embedding_train_vec, y_train)
 
 y_pre_test = model.predict(embedding_test_vec)
 final_feature_test = model.predict_proba(embedding_test_vec)
+final_feature_train = model.predict_proba(embedding_train_vec)
 
 
 y_pre_train = model.predict(embedding_train_vec)
@@ -61,8 +64,9 @@ print('acc:', acc)
 
 miss_train_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_train, y_pre_test, y_train, y_test)
 
-model = XGBClassifier()
-feature_pre = model.predict_proba(final_feature_test)[:, 1]
+model = RandomForestClassifier()
+model.fit(embedding_train_vec, miss_train_label)
+feature_pre = model.predict_proba(embedding_test_vec)[:, 1]
 feature_rank_idx = feature_pre.argsort()[::-1].copy()
 feature_apfd = apfd(idx_miss_test_list, feature_rank_idx)
 print(feature_apfd)
