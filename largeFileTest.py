@@ -10,38 +10,30 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from xgboost import XGBClassifier
 from sklearn.metrics import accuracy_score
-
-path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X.pkl'
-path_chunk_embedding_y = './data/embedding_data/EURLEX57K_chunk_y.pkl'
-path_target_model = './target_models/MiniLM-L6-v2-rf.model'
-
-
-
-
-
-model = joblib.load(path_target_model)
-
-chunk_embedding_X = pickle.load(open(path_chunk_embedding_X, 'rb'))
-y = pickle.load(open(path_chunk_embedding_y, 'rb'))
-
-embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(chunk_embedding_X, y, test_size=0.2, random_state=0)
-#
-# y_pre_train = model.predict(embedding_train_vec)
-# y_pre_test = model.predict(embedding_test_vec)
-
-
-print(embedding_train_vec.shape)
-print(y_train.shape)
-
+from sklearn.decomposition import PCA
 
 path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-path_file_embedding_y = './data/embedding_data/EURLEX57K_file_y.pkl'
+path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
+path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_5.pkl'
+path_target_model = './target_models/MiniLM-L6-v2-rf.model'
+
+file_embedding_X = pickle.load(open(path_file_embedding_X, 'rb'))  # (57000, 384)
+y = pickle.load(open(path_file_y, 'rb'))
+# model = joblib.load(path_target_model)
 
 
 
-file_embedding_X = pickle.load(open(path_file_embedding_X, 'rb'))
+
+chunk_embedding_X = pickle.load(open(path_chunk_embedding_X, 'rb')) # (57000, 5, 384)
+chunk_embedding_X = chunk_embedding_X.reshape(chunk_embedding_X.shape[0], chunk_embedding_X.shape[1] * chunk_embedding_X.shape[2])
+pca = PCA(n_components=128)
+chunk_embedding_X = pca.fit_transform(chunk_embedding_X)
+
+
 print(file_embedding_X.shape)
-file_embedding_y = pickle.load(open(path_file_embedding_y, 'rb'))
-print(file_embedding_y.shape)
+print(chunk_embedding_X.shape)
+
+
+
 
 

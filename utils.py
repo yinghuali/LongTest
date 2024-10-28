@@ -52,7 +52,7 @@ def get_miss_lable(target_train_pre, target_test_pre, y_train, y_test):
 
     miss_test_label = [0]*len(y_test)
     for i in idx_miss_test_list:
-        miss_test_label[i]=1
+        miss_test_label[i] = 1
     miss_test_label = np.array(miss_test_label)
 
     return miss_train_label, miss_test_label, idx_miss_test_list

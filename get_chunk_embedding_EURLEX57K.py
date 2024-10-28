@@ -38,15 +38,12 @@ def main():
     res_ID_list = []
 
     for i in range(len(content_list)):
-        try:
-            text = content_list[i]
-            chunks_list = get_chunks_list(text, num_chunks)
-            embeddings = model.encode(chunks_list)
+        text = content_list[i]
+        chunks_list = get_chunks_list(text, num_chunks)
+        embeddings = model.encode(chunks_list)
 
-            all_embeddings.append(embeddings)
-            res_ID_list.append(ID_list[i])
-        except:
-            pass
+        all_embeddings.append(embeddings)
+        res_ID_list.append(ID_list[i])
 
     all_embeddings = np.array(all_embeddings)
     res_ID_list = np.array(res_ID_list)
