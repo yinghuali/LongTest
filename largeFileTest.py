@@ -13,11 +13,29 @@ from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Lambda
 
-path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
-path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
-path_target_model = './target_models/MiniLM-L6-v2-rf.model'
-path_save_res = './result/MiniLM-L6-v2-rf.json'
+
+import argparse
+ap = argparse.ArgumentParser()
+ap.add_argument("--path_file_embedding_X", type=str)
+ap.add_argument("--path_file_y", type=str)
+ap.add_argument("--path_chunk_embedding_X", type=str)
+ap.add_argument("--path_target_model", type=str)
+ap.add_argument("--path_save_res", type=str)
+args = ap.parse_args()
+
+path_file_embedding_X = args.path_file_embedding_X
+path_file_y = args.path_file_y
+path_chunk_embedding_X = args.path_chunk_embedding_X
+path_target_model = args.path_target_model
+path_save_res = args.path_save_res
+
+# python largeFileTest.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_chunk_embedding_X './data/embedding_data/EURLEX57K_chunk_X_10.pkl' --path_target_model './target_models/MiniLM-L6-v2-rf.model' --path_save_res './result/MiniLM-L6-v2-rf_10.json'
+
+# path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
+# path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
+# path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
+# path_target_model = './target_models/MiniLM-L6-v2-rf.model'
+# path_save_res = './result/MiniLM-L6-v2-rf_10.json'
 
 
 def get_pairs_train(miss_train_label, chunk_embedding_train_vec):
