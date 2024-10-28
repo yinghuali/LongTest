@@ -50,12 +50,13 @@ chunk_embedding_X = chunk_embedding_X.reshape(chunk_embedding_X.shape[0], chunk_
 pca = PCA(n_components=128)
 chunk_embedding_X = pca.fit_transform(chunk_embedding_X)
 
-model = joblib.load(path_target_model)
-y_pre = model.predict(file_embedding_X)
+target_model = joblib.load(path_target_model)
+y_pre = target_model.predict(file_embedding_X)
 
 embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(file_embedding_X, y, test_size=0.2, random_state=0)
-y_pre_train = model.predict(embedding_train_vec)
-y_pre_test = model.predict(embedding_test_vec)
+y_pre_train = target_model.predict(embedding_train_vec)
+y_pre_test = target_model.predict(embedding_test_vec)
+
 miss_train_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_train, y_pre_test, y_train, y_test)
 
 
@@ -65,6 +66,7 @@ chunk_embedding_train_vec, chunk_embedding_test_vec, _, _ = train_test_split(chu
 
 
 
+print(chunk_embedding_train_vec.shape)
 
 model = RandomForestClassifier()
 model.fit(chunk_embedding_train_vec, miss_train_label)
@@ -73,7 +75,7 @@ model_rank_idx = model_pre.argsort()[::-1].copy()
 model_apfd = apfd(idx_miss_test_list, model_rank_idx)
 print(model_apfd)
 
-final_feature_test = model.predict_proba(embedding_test_vec)
+final_feature_test = target_model.predict_proba(embedding_test_vec)
 dic_res = get_compare_method_apfd(final_feature_test, idx_miss_test_list)
 print(dic_res)
 
