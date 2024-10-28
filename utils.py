@@ -58,6 +58,17 @@ def get_miss_lable(target_train_pre, target_test_pre, y_train, y_test):
     return miss_train_label, miss_test_label, idx_miss_test_list
 
 
+def get_select_id(miss_train_label):
+    wrong_id_list = []
+    correct_id_list = []
+    for i in range(len(miss_train_label)):
+        if miss_train_label[i] == 1:
+            wrong_id_list.append(i)
+        else:
+            correct_id_list.append(i)
+    return wrong_id_list, correct_id_list
+
+
 def apfd(error_idx_list, pri_idx_list):
     error_idx_list = list(error_idx_list)
     pri_idx_list = list(pri_idx_list)
