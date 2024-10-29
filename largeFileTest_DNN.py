@@ -1,6 +1,7 @@
 import pickle
 import random
 import numpy as np
+import os
 import json
 import joblib
 from read_data import *
@@ -12,9 +13,12 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from tensorflow.keras import backend as K
 from tensorflow.keras.layers import Lambda
+from tensorflow.keras.models import load_model
+from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout
 from tensorflow.keras.optimizers import Adam
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 
 
 import argparse
@@ -32,13 +36,13 @@ path_chunk_embedding_X = args.path_chunk_embedding_X
 path_target_model = args.path_target_model
 path_save_res = args.path_save_res
 
-# python largeFileTest.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_chunk_embedding_X './data/embedding_data/EURLEX57K_chunk_X_10.pkl' --path_target_model './target_models/MiniLM-L6-v2-rf.model' --path_save_res './result/MiniLM-L6-v2-rf_10.json'
+# python largeFileTest.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_chunk_embedding_X './data/embedding_data/EURLEX57K_chunk_X_10.pkl' --path_target_model './target_models/MiniLM-L6-v2-dnn.h5' --path_save_res './result/MiniLM-L6-v2-dnn_10.json'
 
 # path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
 # path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
 # path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
-# path_target_model = './target_models/MiniLM-L6-v2-rf.model'
-# path_save_res = './result/MiniLM-L6-v2-rf_10.json'
+# path_target_model = './target_models/MiniLM-L6-v2-dnn.h5'
+# path_save_res = './result/MiniLM-L6-v2-dnn_10.json'
 
 
 def get_pairs_train(miss_train_label, chunk_embedding_train_vec):
@@ -125,6 +129,7 @@ def get_compare_method_apfd(x_test_target_model_pre, idx_miss_test_list):
 
 
 def main():
+
     file_embedding_X = pickle.load(open(path_file_embedding_X, 'rb'))
     y = pickle.load(open(path_file_y, 'rb'))
 
@@ -133,12 +138,12 @@ def main():
     pca = PCA(n_components=128)
     chunk_embedding_X = pca.fit_transform(chunk_embedding_X)
 
-    target_model = joblib.load(path_target_model)
-    y_pre = target_model.predict(file_embedding_X)
+    target_model = load_model(path_target_model)
 
     embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(file_embedding_X, y, test_size=0.2, random_state=0)
-    y_pre_train = target_model.predict(embedding_train_vec)
-    y_pre_test = target_model.predict(embedding_test_vec)
+
+    y_pre_train = np.argmax(target_model.predict(embedding_train_vec), axis=1)
+    y_pre_test = np.argmax(target_model.predict(embedding_test_vec), axis=1)
 
     miss_train_label, miss_test_label, idx_miss_test_list = get_miss_lable(y_pre_train, y_pre_test, y_train, y_test)
 
@@ -156,15 +161,6 @@ def main():
     final_feature_test = target_model.predict_proba(embedding_test_vec)
     dic_res = get_compare_method_apfd(final_feature_test, idx_miss_test_list)
 
-    model = RandomForestClassifier()
-    model.fit(chunk_embedding_train_vec, miss_train_label)
-    model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
-    model_rank_idx = model_pre.argsort()[::-1].copy()
-    model_apfd = apfd(idx_miss_test_list, model_rank_idx)
-    dic_res['model'] = model_apfd
-    print(dic_res)
-    json.dump(dic_res, open(path_save_res, 'w'))
-
     # def build_dnn_model(input_shape):
     #     model = Sequential()
     #     model.add(Dense(128, activation='relu', input_shape=(input_shape,)))
@@ -178,6 +174,15 @@ def main():
     # model.compile(optimizer=Adam(learning_rate=0.01), loss='binary_crossentropy', metrics=['accuracy'])
     # model.fit(chunk_embedding_train_vec, miss_train_label, epochs=20, batch_size=32)
     # model_pre = model.predict(chunk_embedding_test_vec).flatten()
+    # model_rank_idx = model_pre.argsort()[::-1].copy()
+    # model_apfd = apfd(idx_miss_test_list, model_rank_idx)
+    # dic_res['model'] = model_apfd
+    # print(dic_res)
+    # json.dump(dic_res, open(path_save_res, 'w'))
+
+    # model = RandomForestClassifier()
+    # model.fit(chunk_embedding_train_vec, miss_train_label)
+    # model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
     # model_rank_idx = model_pre.argsort()[::-1].copy()
     # model_apfd = apfd(idx_miss_test_list, model_rank_idx)
     # dic_res['model'] = model_apfd
