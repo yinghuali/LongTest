@@ -5,7 +5,7 @@ from read_data import *
 from utils import *
 from get_rank_idx import *
 from sklearn.metrics import accuracy_score
-from pytorch_tabnet.multitask import TabNetMultiTaskClassifier
+from pytorch_tabnet.tab_model import TabNetClassifier
 
 import argparse
 ap = argparse.ArgumentParser()
@@ -32,8 +32,8 @@ def main():
     embedding_train_vec, embedding_test_vec, y_train, y_test = train_test_split(embedding_vec, y, test_size=0.2, random_state=0)
     embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.5, random_state=0)
 
-    model = TabNetMultiTaskClassifier()
-    model.fit(embedding_train_vec, y_train)
+    model = TabNetClassifier()
+    model.fit(embedding_train_vec, y_train, max_epochs=10)
     model.save_model(path_save_model)
 
     y_pre_test = model.predict(embedding_test_vec)
