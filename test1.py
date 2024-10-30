@@ -1,17 +1,14 @@
-from sentence_transformers import SentenceTransformer
+import pickle
+import numpy as np
 
-# 1. Load a pretrained Sentence Transformer model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+y = list(pickle.load(open('./data/embedding_data/FakeNews_file_y.pkl', 'rb')))
 
-# The sentences to encode
-sentences = [
-    "The weather is lovely today.",
-    "It's so sunny outside!",
-    "He drove to the stadium.",
-]
+new_y = []
+for i in y:
+    if int(i) >= 2:
+        new_y.append(2)
+    else:
+        new_y.append(i)
+new_y = np.array(new_y)
+pickle.dump(new_y, open('./data/embedding_data/FakeNews_file_y.pkl', 'wb'))
 
-# 2. Calculate embeddings by calling model.encode()
-embeddings = model.encode(sentences)
-print(embeddings.shape)
-
-print(embeddings[0])

@@ -23,19 +23,10 @@ path_file_embedding_y = args.path_file_embedding_y
 path_save_model = args.path_save_model
 model_name = args.model_name
 
-# path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-# path_file_embedding_y = './data/embedding_data/EURLEX57K_file_y.pkl'
-# path_save_model = './target_models/MiniLM-L6-v2-rf.pkl'
-# model_name = 'rf'
-
-# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-rf.model' --model_name 'rf'
-# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-lr.model' --model_name 'lr'
-# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-dt.model' --model_name 'dt'
-
 
 def select_model(model_name):
     if model_name == 'rf':
-        model = RandomForestClassifier(n_estimators=5, max_depth=3)
+        model = RandomForestClassifier(n_estimators=300, max_depth=7)
     elif model_name == 'lr':
         model = LogisticRegression(max_iter=5)
     elif model_name == 'dt':
