@@ -12,12 +12,14 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--path_file_embedding_X", type=str)
 ap.add_argument("--path_file_embedding_y", type=str)
 ap.add_argument("--path_save_model", type=str)
+ap.add_argument("--epochs", type=int)
 args = ap.parse_args()
 
 
 path_file_embedding_X = args.path_file_embedding_X
 path_file_embedding_y = args.path_file_embedding_y
 path_save_model = args.path_save_model
+epochs = args.epochs
 
 # python get_target_tabnet.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-tabnet.pth'
 
@@ -33,7 +35,7 @@ def main():
     embedding_train_vec, embedding_val_vec, y_train, y_val = train_test_split(embedding_train_vec, y_train, test_size=0.5, random_state=0)
 
     model = TabNetClassifier()
-    model.fit(embedding_train_vec, y_train, max_epochs=10)
+    model.fit(embedding_train_vec, y_train, max_epochs=epochs)
     model.save_model(path_save_model)
 
     y_pre_test = model.predict(embedding_test_vec)

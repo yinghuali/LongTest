@@ -14,19 +14,20 @@ ap = argparse.ArgumentParser()
 ap.add_argument("--path_file_embedding_X", type=str)
 ap.add_argument("--path_file_embedding_y", type=str)
 ap.add_argument("--path_save_model", type=str)
+ap.add_argument("--epochs", type=int)
 args = ap.parse_args()
 
 
 path_file_embedding_X = args.path_file_embedding_X
 path_file_embedding_y = args.path_file_embedding_y
 path_save_model = args.path_save_model
+epochs = args.epochs
 
 
 # path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
 # path_file_embedding_y = './data/embedding_data/EURLEX57K_file_y.pkl'
 # path_save_model = './target_models/MiniLM-L6-v2-dnn.model'
 
-# python get_target_models.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-dnn.h5'
 
 def build_dnn_model(input_shape, num_classes):
     model = Sequential()
@@ -50,7 +51,7 @@ def main():
     input_shape = embedding_vec.shape[1]
     model = build_dnn_model(input_shape, num_classes)
     model.compile(optimizer=Adam(learning_rate=0.001), loss='sparse_categorical_crossentropy', metrics=['accuracy'])
-    model.fit(embedding_train_vec, y_train, epochs=3, batch_size=128)
+    model.fit(embedding_train_vec, y_train, epochs=epochs, batch_size=128)
     model.save(path_save_model)
 
     y_pre_train = np.argmax(model.predict(embedding_train_vec), axis=1)

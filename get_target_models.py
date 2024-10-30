@@ -35,7 +35,7 @@ model_name = args.model_name
 
 def select_model(model_name):
     if model_name == 'rf':
-        model = RandomForestClassifier(n_estimators=10, max_depth=3)
+        model = RandomForestClassifier(n_estimators=5, max_depth=3)
     elif model_name == 'lr':
         model = LogisticRegression(max_iter=5)
     elif model_name == 'dt':

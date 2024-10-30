@@ -157,8 +157,11 @@ def main():
     dic_res = get_compare_method_apfd(final_feature_test, idx_miss_test_list)
 
     model = RandomForestClassifier()
-    model.fit(chunk_embedding_train_vec, miss_train_label)
-    model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
+    # model.fit(chunk_embedding_train_vec, miss_train_label)
+    # model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
+    model.fit(embedding_train_vec, miss_train_label)
+    model_pre = model.predict_proba(embedding_test_vec)[:, 1]
+
     model_rank_idx = model_pre.argsort()[::-1].copy()
     model_apfd = apfd(idx_miss_test_list, model_rank_idx)
     dic_res['model'] = model_apfd
