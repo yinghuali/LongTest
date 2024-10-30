@@ -10,5 +10,6 @@
 
 # python get_file_embedding.py --path_data './data/EURLEX57K/df_all_EURLEX57K.csv' --path_save_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_save_y './data/embedding_data/EURLEX57K_file_y.pkl'
 
-python get_file_embedding.py --path_data './data/FakeNews/df_all_FakeNews.csv' --path_save_X './data/embedding_data/FakeNews_file_X.pkl' --path_save_y './data/embedding_data/FakeNews_file_y.pkl'
+# python get_file_embedding.py --path_data './data/FakeNews/df_all_FakeNews.csv' --path_save_X './data/embedding_data/FakeNews_file_X.pkl' --path_save_y './data/embedding_data/FakeNews_file_y.pkl'
 
+python get_file_embedding.py --path_data './data/CancerDoc/df_all_CancerDoc.csv' --path_save_X './data/embedding_data/CancerDoc_file_X.pkl' --path_save_y './data/embedding_data/CancerDoc_file_y.pkl'

@@ -8,5 +8,5 @@
 #SBATCH --output=/dev/null
 #SBATCH --mem 100G
 
-python get_chunk_embedding.py --num_chunks 15 --path_data './data/FakeNews/df_all_FakeNews.csv' --path_save_X './data/embedding_data/FakeNews_chunk_X_15.pkl'
+python get_chunk_embedding.py --num_chunks 15 --path_data './data/CancerDoc/df_all_CancerDoc.csv' --path_save_X './data/embedding_data/CancerDoc_chunk_X_15.pkl'
 

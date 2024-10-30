@@ -17,12 +17,6 @@ path_data = args.path_data
 path_save_X = args.path_save_X
 num_chunks = args.num_chunks
 
-# python get_chunk_embedding.py --num_chunks 5 --path_data './data/EURLEX57K/df_all_EURLEX57K.csv' --path_save_X './data/embedding_data/EURLEX57K_chunk_X.pkl'
-
-# num_chunks = 10
-# path_data = './data/EURLEX57K/df_all_EURLEX57K.csv'
-# path_save_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
-
 
 def main():
     df = pd.read_csv(path_data)
