@@ -32,14 +32,6 @@ path_chunk_embedding_X = args.path_chunk_embedding_X
 path_target_model = args.path_target_model
 path_save_res = args.path_save_res
 
-# python largeFileTest.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_chunk_embedding_X './data/embedding_data/EURLEX57K_chunk_X_10.pkl' --path_target_model './target_models/MiniLM-L6-v2-rf.model' --path_save_res './result/MiniLM-L6-v2-rf_10.json'
-
-# path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-# path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
-# path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
-# path_target_model = './target_models/MiniLM-L6-v2-rf.model'
-# path_save_res = './result/MiniLM-L6-v2-rf_10.json'
-
 
 def get_pairs_train(miss_train_label, chunk_embedding_train_vec):
     wrong_id_list, correct_id_list = get_select_id(miss_train_label)
@@ -157,10 +149,8 @@ def main():
     dic_res = get_compare_method_apfd(final_feature_test, idx_miss_test_list)
 
     model = RandomForestClassifier()
-    # model.fit(chunk_embedding_train_vec, miss_train_label)
-    # model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
-    model.fit(embedding_train_vec, miss_train_label)
-    model_pre = model.predict_proba(embedding_test_vec)[:, 1]
+    model.fit(chunk_embedding_train_vec, miss_train_label)
+    model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
 
     model_rank_idx = model_pre.argsort()[::-1].copy()
     model_apfd = apfd(idx_miss_test_list, model_rank_idx)
