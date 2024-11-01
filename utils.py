@@ -78,3 +78,13 @@ def apfd(error_idx_list, pri_idx_list):
     apfd = 1 - sum(TF_list)*1.0 / (n*m) + 1 / (2*n)
     return apfd
 
+
+def get_res_ratio_list(idx_miss_list, select_idx_list, select_ratio_list):
+    res_ratio_list = []
+    for i in select_ratio_list:
+        n = round(len(select_idx_list) * i)
+        tmp_select_idx_list = select_idx_list[: n]
+        n_hit = len(np.intersect1d(idx_miss_list, tmp_select_idx_list, assume_unique=False, return_indices=False))
+        ratio = round(n_hit / len(idx_miss_list), 4)
+        res_ratio_list.append(ratio)
+    return res_ratio_list
