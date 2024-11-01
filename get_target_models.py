@@ -28,7 +28,7 @@ def select_model(model_name):
     if model_name == 'rf':
         model = RandomForestClassifier(n_estimators=5, max_depth=5)
     elif model_name == 'lr':
-        model = LogisticRegression(max_iter=5)
+        model = LogisticRegression(max_iter=4)
     elif model_name == 'dt':
         model = DecisionTreeClassifier(max_depth=6)
     return model
