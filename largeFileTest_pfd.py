@@ -124,6 +124,13 @@ def main():
     X_test_pre_vec = target_model.predict_proba(embedding_test_vec)
 
     model = RandomForestClassifier()
+
+    max_float32 = np.finfo(np.float32).max
+    chunk_embedding_train_vec = np.where(chunk_embedding_train_vec > max_float32, max_float32, chunk_embedding_train_vec)
+    chunk_embedding_train_vec = np.where(chunk_embedding_train_vec < -max_float32, -max_float32, chunk_embedding_train_vec)
+    chunk_embedding_test_vec = np.where(chunk_embedding_test_vec > max_float32, max_float32, chunk_embedding_test_vec)
+    chunk_embedding_test_vec = np.where(chunk_embedding_test_vec < -max_float32, -max_float32, chunk_embedding_test_vec)
+
     model.fit(chunk_embedding_train_vec, miss_train_label)
     model_pre = model.predict_proba(chunk_embedding_test_vec)[:, 1]
 
