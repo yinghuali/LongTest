@@ -3,7 +3,7 @@ import random
 import numpy as np
 import json
 import joblib
-from read_data import *
+from sklearn.model_selection import train_test_split
 from utils import *
 from get_rank_idx import *
 from sklearn.ensemble import RandomForestClassifier
