@@ -176,3 +176,4 @@ test.py
 *ipynb_checkpoints
 result/*
 tables/*
+*dimension*
