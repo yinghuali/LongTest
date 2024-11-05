@@ -170,11 +170,14 @@ data/*
 *.pptx
 *.pkl
 tables/*
-result/*
 *.ipynb
 test.py
 *ipynb_checkpoints
-result/*
+result/chunk
+result/contrast
+result/dimension
+result/parameter
+result/pca
 tables/*
 *dimension*
 *parameter*
