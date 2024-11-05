@@ -18,8 +18,8 @@ LongTest: Test Prioritization for Long Text Files
 
 ## How to run LongTest
 #### Step1: Download the dataset: 
-XXXXX
-This dataset includes all three dataset embedding vectors.   
+https://zenodo.org/records/14042981  
+This dataset includes all embedding vectors.   
 Please unpack the dataset and place them in the LongTest directory. 
 
 #### Step2: Run LongTest  
