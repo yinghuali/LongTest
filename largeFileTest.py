@@ -165,25 +165,6 @@ def main():
     print(dic_res)
     json.dump(dic_res, open(path_save_res, 'w'))
 
-    # def build_dnn_model(input_shape):
-    #     model = Sequential()
-    #     model.add(Dense(128, activation='relu', input_shape=(input_shape,)))
-    #     model.add(Dropout(0.3))
-    #     model.add(Dense(64, activation='relu'))
-    #     model.add(Dense(1, activation='sigmoid'))
-    #
-    #     return model
-    #
-    # model = build_dnn_model(chunk_embedding_train_vec.shape[1])
-    # model.compile(optimizer=Adam(learning_rate=0.01), loss='binary_crossentropy', metrics=['accuracy'])
-    # model.fit(chunk_embedding_train_vec, miss_train_label, epochs=20, batch_size=32)
-    # model_pre = model.predict(chunk_embedding_test_vec).flatten()
-    # model_rank_idx = model_pre.argsort()[::-1].copy()
-    # model_apfd = apfd(idx_miss_test_list, model_rank_idx)
-    # dic_res['model'] = model_apfd
-    # print(dic_res)
-    # json.dump(dic_res, open(path_save_res, 'w'))
-
 
 if __name__ == '__main__':
     main()
