@@ -177,3 +177,5 @@ test.py
 result/*
 tables/*
 *dimension*
+*parameter*
+*pca*
