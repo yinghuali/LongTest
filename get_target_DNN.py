@@ -1,7 +1,7 @@
 import pickle
 import numpy as np
 import os
-from read_data import *
+from sklearn.model_selection import train_test_split
 from utils import *
 from sklearn.metrics import accuracy_score
 from tensorflow.keras.models import Sequential

@@ -1,7 +1,7 @@
 import pickle
 import joblib
 import numpy as np
-from read_data import *
+from sklearn.model_selection import train_test_split
 from utils import *
 from get_rank_idx import *
 from sklearn.metrics import accuracy_score
