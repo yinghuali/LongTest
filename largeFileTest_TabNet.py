@@ -33,14 +33,6 @@ path_chunk_embedding_X = args.path_chunk_embedding_X
 path_target_model = args.path_target_model
 path_save_res = args.path_save_res
 
-# python largeFileTest_TabNet.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_chunk_embedding_X './data/embedding_data/EURLEX57K_chunk_X_10.pkl' --path_target_model './target_models/MiniLM-L6-v2-tabnet.pth.zip' --path_save_res './result/MiniLM-L6-v2-tabnet_10.json'
-
-# path_file_embedding_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-# path_file_y = './data/embedding_data/EURLEX57K_file_y.pkl'
-# path_chunk_embedding_X = './data/embedding_data/EURLEX57K_chunk_X_10.pkl'
-# path_target_model = './target_models/MiniLM-L6-v2-tabnet.pth.zip'
-# path_save_res = './result/MiniLM-L6-v2-tabnet_10.json'
-
 
 def get_pairs_train(miss_train_label, chunk_embedding_train_vec):
     wrong_id_list, correct_id_list = get_select_id(miss_train_label)
@@ -173,25 +165,6 @@ def main():
     dic_res['model'] = model_apfd
     print(dic_res)
     json.dump(dic_res, open(path_save_res, 'w'))
-
-    # def build_dnn_model(input_shape):
-    #     model = Sequential()
-    #     model.add(Dense(128, activation='relu', input_shape=(input_shape,)))
-    #     model.add(Dropout(0.3))
-    #     model.add(Dense(64, activation='relu'))
-    #     model.add(Dense(1, activation='sigmoid'))
-    #
-    #     return model
-    #
-    # model = build_dnn_model(chunk_embedding_train_vec.shape[1])
-    # model.compile(optimizer=Adam(learning_rate=0.01), loss='binary_crossentropy', metrics=['accuracy'])
-    # model.fit(chunk_embedding_train_vec, miss_train_label, epochs=20, batch_size=32)
-    # model_pre = model.predict(chunk_embedding_test_vec).flatten()
-    # model_rank_idx = model_pre.argsort()[::-1].copy()
-    # model_apfd = apfd(idx_miss_test_list, model_rank_idx)
-    # dic_res['model'] = model_apfd
-    # print(dic_res)
-    # json.dump(dic_res, open(path_save_res, 'w'))
 
 
 if __name__ == '__main__':

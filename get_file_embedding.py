@@ -17,12 +17,6 @@ path_data = args.path_data
 path_save_X = args.path_save_X
 path_save_y = args.path_save_y
 
-# python get_file_embedding.py --path_data './data/EURLEX57K/df_all_EURLEX57K.csv' --path_save_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_save_y './data/embedding_data/EURLEX57K_file_y.pkl'
-
-# path_data = './data/EURLEX57K/df_all_EURLEX57K.csv'
-# path_save_X = './data/embedding_data/EURLEX57K_file_X.pkl'
-# path_save_y = './data/embedding_data/EURLEX57K_file_y.pkl'
-
 
 def main():
     df = pd.read_csv(path_data)
@@ -36,8 +30,6 @@ def main():
     pickle.dump(all_embeddings, open(path_save_X, 'wb'), protocol=4)
     y = np.array(y_list)
     pickle.dump(y, open(path_save_y, 'wb'), protocol=4)
-
-
 
 
 if __name__ == '__main__':

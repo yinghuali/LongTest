@@ -21,8 +21,6 @@ path_file_embedding_y = args.path_file_embedding_y
 path_save_model = args.path_save_model
 epochs = args.epochs
 
-# python get_target_tabnet.py --path_file_embedding_X './data/embedding_data/EURLEX57K_file_X.pkl' --path_file_embedding_y './data/embedding_data/EURLEX57K_file_y.pkl' --path_save_model './target_models/MiniLM-L6-v2-tabnet.pth'
-
 
 def main():
 

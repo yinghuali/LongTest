@@ -34,7 +34,5 @@ def main():
     pickle.dump(y, open(path_save_y, 'wb'), protocol=4)
 
 
-
-
 if __name__ == '__main__':
     main()
